@@ -1,36 +1,27 @@
-import {
-    Injectable,
-    NestInterceptor,
-    ExecutionContext,
-    CallHandler,
-    StreamableFile,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { CallHandler, ExecutionContext, Injectable, Response, StreamableFile, type NestInterceptor } from "@nestjs/common"
+import { Observable, map } from "rxjs"
+import { buildSuccessResponse } from "./build-success-response"
+
+export type Response<T = any> = {
+    data: T | null
+    meta: {
+        status: string
+        code: number
+        message: string
+    }
+}
 
 @Injectable()
-export class ResponseApiInterceptor implements NestInterceptor {
-    intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+export class ResponseTransformInterceptor<T = any> implements NestInterceptor<T, Response<T>> {
+    intercept(context: ExecutionContext, next: CallHandler<T>): Observable<Response<T>> | Promise<Observable<Response<T>>> {
         return next.handle().pipe(
             map((data) => {
                 if (data instanceof StreamableFile) {
-                    return data as any;
+                    return data as any
                 }
-
-                const response = context.switchToHttp().getResponse<any>();
-                const statusCode = response.statusCode;
-                const message = (data as any)?.message;
-                let dataResponse = data;
-
-                return {
-                    meta: {
-                        code: statusCode,
-                        status: statusCode >= 200 && statusCode < 300 ? 'success' : 'error',
-                        message: message ?? 'Successfully',
-                    },
-                    data: dataResponse,
-                };
+                const response = context.switchToHttp().getResponse<any>()
+                return buildSuccessResponse(response.statusCode, data)
             }),
-        );
+        )
     }
 }

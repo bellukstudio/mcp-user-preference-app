@@ -30,7 +30,7 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
             errorResponse = this._handleInternalException(exception, host);
         }
 
-        httpAdapter.reply(response, errorResponse, errorResponse.meta.statusCode);
+        httpAdapter.reply(response, errorResponse, errorResponse.meta.code);
     }
 
     private _handleHttpException(exception: HttpException, _host: ArgumentsHost): ErrorResponse {

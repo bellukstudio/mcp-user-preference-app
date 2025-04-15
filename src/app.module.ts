@@ -5,8 +5,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core/constants';
-import { ResponseApiInterceptor } from './core/interceptor/response-api.interceptor';
 import { AllExceptionsFilter } from './core/filters/all-exception.filter';
+import { ResponseTransformInterceptor } from './core/interceptor/response-api.interceptor';
 @Module({
   imports: [
     ThrottlerModule.forRoot([{
@@ -23,7 +23,7 @@ import { AllExceptionsFilter } from './core/filters/all-exception.filter';
   ],
   providers: [
     {
-      provide: APP_INTERCEPTOR, useClass: ResponseApiInterceptor
+      provide: APP_INTERCEPTOR, useClass: ResponseTransformInterceptor
     },
     {
       provide: APP_FILTER, useClass: AllExceptionsFilter
