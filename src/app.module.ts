@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core/constants';
 import { AllExceptionsFilter } from './core/filters/all-exception.filter';
 import { ResponseTransformInterceptor } from './core/interceptor/response-api.interceptor';
+import { ClaudeModule } from './claude/claude.module';
 @Module({
   imports: [
     ThrottlerModule.forRoot([{
@@ -19,7 +20,8 @@ import { ResponseTransformInterceptor } from './core/interceptor/response-api.in
     }),
     AuthModule,
     PreferencesModule,
-    PrismaModule
+    PrismaModule,
+    ClaudeModule
   ],
   providers: [
     {
@@ -32,6 +34,6 @@ import { ResponseTransformInterceptor } from './core/interceptor/response-api.in
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
-  ]
+  ],
 })
 export class AppModule { }
