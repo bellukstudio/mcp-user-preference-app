@@ -30,6 +30,8 @@
 
 ```bash
 $ npm install
+$ npx prisma migrate dev --name init
+$ npx prisma generate
 ```
 
 ## Compile and run the project
@@ -45,18 +47,6 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
 
 ## Resources
 
