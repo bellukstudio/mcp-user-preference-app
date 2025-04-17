@@ -34,6 +34,12 @@ $ npx prisma migrate dev --name init
 $ npx prisma generate
 ```
 
+## Add to file .env
+```
+DATABASE_URL="mysql://root@localhost:3306/user_preference_db"
+CLAUDE_API_KEY=
+
+```
 ## Compile and run the project
 
 ```bash
